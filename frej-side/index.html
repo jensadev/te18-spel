@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sidescroller example</title>
+  <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
+</head>
+
+<body>
+
+
+  <script>
+
+const config = {
+        type: Phaser.AUTO,
+        width: 800,
+        height: 600,
+        physics: {
+            default: 'arcade',
+            arcade: {
+                gravity: { y: 300 },
+                debug: true
+            }
+        },
+        scene: {
+            preload: preload,
+            create: create,
+            update: update
+        }
+    };
+
+    let platforms;
+    let player;
+
+    const game = new Phaser.Game(config);
+
+    function preload ()
+    {
+      this.load.multiatlas('caveperson', 'assets/caveperson.json', 'assets/');
+      this.load.multiatlas('world', 'assets/world.json', 'assets/');
+        // this.load.image('ground', 'assets/platform.png');
+        // this.load.image('star', 'assets/star.png');
+        // this.load.image('bomb', 'assets/bomb.png');
+        // this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
+    }
+
+    function create ()
+    {
+      this.anims.create({
+            key: 'run',
+            frames: this.anims.generateFrameNames('caveperson', {
+                frames: ['0.png', '1.png', '2.png', '1.png']
+            }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+      // this.add.image(400, 300, 'world', '00.png');
+
+      let bg = this.add.sprite(400, 300, 'world', '00.png');
+      bg.setScale(14, 10);
+
+      platforms = this.physics.add.staticGroup();
+
+      for(let i = 0; i < 800; i += 64) {
+        console.log(i);
+        platforms.create(i, 568, 'world').setFrame('12.png');
+      }
+
+      // platforms.create(600, 400, 'ground');
+      // platforms.create(50, 250, 'ground');
+      // platforms.create(750, 220, 'ground');
+
+      player = this.physics.add.sprite(100, 200, 'caveperson');
+
+      player.setBounce(0.2);
+      player.setCollideWorldBounds(true);
+      
+      this.physics.add.collider(player, platforms);
+      // player.anims.play('run');
+    }
+
+    function update ()
+    {
+    }
+
+  </script>
+</body>
+
+</html>
