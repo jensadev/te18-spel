@@ -31,19 +31,15 @@
       }
     };
 
-    let platforms;
-    let player;
-    let cursors;
+    let platforms, player, cursors, score = 0, scoreText, gameOver = false, bombs, stars;
 
     const game = new Phaser.Game(config);
 
     function preload() {
       this.load.multiatlas('caveperson', 'assets/caveperson.json', 'assets/');
       this.load.multiatlas('world', 'assets/world.json', 'assets/');
-      // this.load.image('ground', 'assets/platform.png');
-      // this.load.image('star', 'assets/star.png');
-      // this.load.image('bomb', 'assets/bomb.png');
-      // this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
+      this.load.image('star', 'assets/star.png');
+      this.load.image('bomb', 'assets/bomb.png');
     }
 
     function create() {
@@ -64,7 +60,7 @@
       for (let i = 0; i < 800; i += 64) {
         if (i % 128 == 64) {
           platforms.create(i, 568, 'world').setFrame('12.png');
-        } else if (i % 256 == 128){
+        } else if (i % 256 == 128) {
           platforms.create(i, 568, 'world').setFrame('13.png');
         } else {
           platforms.create(i, 568, 'world').setFrame('11.png');
@@ -81,21 +77,46 @@
 
       platforms.create(704, 220, 'world').setFrame('09.png').setScale(.5).refreshBody();
       platforms.create(768, 220, 'world').setFrame('14.png').setScale(1.5, .5).refreshBody();
-      // platforms.create(50, 250, 'ground');
-      // platforms.create(750, 220, 'ground');
 
-      player = this.physics.add.sprite(100, 450, 'caveperson');
+      player = this.physics.add.sprite(100, 450, 'caveperson').setScale(.75).refreshBody();
 
       player.setBounce(0.2);
       player.setCollideWorldBounds(true);
 
+      stars = this.physics.add.group({
+        key: 'star',
+        repeat: 11,
+        setXY: { x: 12, y: 0, stepX: 70 }
+      });
+
+      stars.children.iterate(function (child) {
+
+        child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+
+      });
+
+      bombs = this.physics.add.group();
+
+
+
+      scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+
       this.physics.add.collider(player, platforms);
+      this.physics.add.collider(stars, platforms);
+      this.physics.add.collider(bombs, platforms);
+      this.physics.add.overlap(player, stars, collectStar, null, this);
+      this.physics.add.collider(player, bombs, hitBomb, null, this);
 
       cursors = this.input.keyboard.createCursorKeys();
       // player.anims.play('run');
     }
 
     function update() {
+
+      if (gameOver) {
+        return;
+      }
+
       if (cursors.left.isDown) {
         player.setVelocityX(-160);
         player.flipX = false;
@@ -115,6 +136,42 @@
       if (cursors.up.isDown && player.body.touching.down) {
         player.setVelocityY(-330);
       }
+    }
+
+    function collectStar(player, star) {
+      star.disableBody(true, true);
+
+      //  Add and update the score
+      score += 10;
+      scoreText.setText('Score: ' + score);
+
+      if (stars.countActive(true) === 0) {
+        //  A new batch of stars to collect
+        stars.children.iterate(function (child) {
+
+          child.enableBody(true, child.x, 0, true, true);
+
+        });
+
+        var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+
+        var bomb = bombs.create(x, 16, 'bomb');
+        bomb.setBounce(1);
+        bomb.setCollideWorldBounds(true);
+        bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+        bomb.allowGravity = false;
+
+      }
+    }
+
+    function hitBomb(player, bomb) {
+      this.physics.pause();
+
+      player.setTint(0xff0000);
+
+      player.anims.stop();
+
+      gameOver = true;
     }
 
   </script>
