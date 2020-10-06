@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sidescroller example</title>
-  <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.min.js"></script>
 </head>
 
 <body>
@@ -56,8 +56,6 @@
         repeat: -1
       });
 
-      // this.add.image(400, 300, 'world', '00.png');
-
       let bg = this.add.sprite(400, 300, 'world', '00.png');
       bg.setScale(14, 10);
 
@@ -73,11 +71,20 @@
         }
       }
 
-      // platforms.create(600, 400, 'ground');
+      platforms.create(448, 400, 'world').setFrame('09.png').setScale(.5).refreshBody();
+      platforms.create(592, 400, 'world').setFrame('14.png').setScale(4, .5).refreshBody();
+      platforms.create(736, 400, 'world').setFrame('19.png').setScale(.5).refreshBody();
+
+      platforms.create(32, 250, 'world').setFrame('09.png').setScale(.5).refreshBody();
+      platforms.create(128, 250, 'world').setFrame('14.png').setScale(2.5, .5).refreshBody();
+      platforms.create(224, 250, 'world').setFrame('19.png').setScale(.5).refreshBody();
+
+      platforms.create(704, 220, 'world').setFrame('09.png').setScale(.5).refreshBody();
+      platforms.create(768, 220, 'world').setFrame('14.png').setScale(1.5, .5).refreshBody();
       // platforms.create(50, 250, 'ground');
       // platforms.create(750, 220, 'ground');
 
-      player = this.physics.add.sprite(100, 200, 'caveperson');
+      player = this.physics.add.sprite(100, 450, 'caveperson');
 
       player.setBounce(0.2);
       player.setCollideWorldBounds(true);
