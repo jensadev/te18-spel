@@ -38,8 +38,8 @@
     function preload() {
       this.load.multiatlas('caveperson', 'assets/caveperson.json', 'assets/');
       this.load.multiatlas('world', 'assets/world.json', 'assets/');
-      this.load.image('star', 'assets/star.png');
-      this.load.image('bomb', 'assets/bomb.png');
+      this.load.image('star', 'assets/round_star_rate_black_18dp.png');
+      this.load.image('bomb', 'assets/round_adb_black_18dp.png');
     }
 
     function create() {
@@ -155,7 +155,7 @@
 
         var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
 
-        var bomb = bombs.create(x, 16, 'bomb');
+        var bomb = bombs.create(x, 16, 'bomb').setScale(2).refreshBody();
         bomb.setBounce(1);
         bomb.setCollideWorldBounds(true);
         bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
