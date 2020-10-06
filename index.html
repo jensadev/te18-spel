@@ -64,7 +64,6 @@
       platforms = this.physics.add.staticGroup();
 
       for (let i = 0; i < 800; i += 64) {
-        console.log(i % 256);
         if (i % 128 == 64) {
           platforms.create(i, 568, 'world').setFrame('12.png');
         } else if (i % 256 == 128){
