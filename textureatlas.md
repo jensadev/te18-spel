@@ -27,3 +27,47 @@ För att skapa en spritesheet med tillhörande atlas.
 * disable smoothing(möjligen)
 * exportera
 
+Resultatet blir en spritesheet och en json fil.
+
+![Caveperson](https://raw.githubusercontent.com/jensnti/te18-spel/main/assets/caveperson.png)
+
+Här följer ett utdrag ur json filen. Den består av ett json object som innehåller en array med textures.
+Den första delen anger vilken spritesheet(bild) som ska användas, dess format och storlek.
+Det som följer är varje ruta(frame) som bilden innehåller, dvs. varje enskild bild. Namnen på dessa utgår från 
+filnamnen när filken skapades(men de kan med fördel redigeras till att vara något mer beskrivande än 0.png). Varje
+ruta har ett antal egenskaper som bredd, höjd och position på spritesheetet.
+
+```
+{
+	"textures": [
+		{
+			"image": "caveperson.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 58,
+				"h": 192
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 2,
+						"y": 0,
+						"w": 58,
+						"h": 64
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 58,
+						"h": 64
+					}
+				},
+```
