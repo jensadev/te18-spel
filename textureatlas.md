@@ -8,6 +8,15 @@ När du arbetar med bilder i ett kodprojekt finns det ett par riktlinjer att fö
 * inga specialtecken, åäö,:;'*?"\¤"#%@//
 * använd helst bara små bokstäver (kolla även filändelsen)
 
+## Storlek
+
+Det är en fördel att använda en konsekvent storlek på sprites. För pixelgrafiken så brukar det röra sig om 8, 16, 32, 64 osv. i storlek.
+Bestäm detta tidigt i utvecklingen eftesom det påverkar hela spelet. Var sedan noga med att följa det!
+
+## Format
+
+Använd .png
+
 ## Free Texture Packer
 
 Spel sparar ofta bilder i form av spritesheets, vilket är flera bilder samlade i en bild. För att skapa en spritesheet så 
