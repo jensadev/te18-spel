@@ -71,3 +71,71 @@ ruta har ett antal egenskaper som bredd, höjd och position på spritesheetet.
 					}
 				},
 ```
+
+## Använda en atlas i Phaser
+
+I spelets preload metod behöver atlasen laddas. Funktionen tar ett antal parametrar, ange: assetname, source, folder.
+
+```
+function preload() {
+  this.load.multiatlas('caveperson', 'assets/caveperson.json', 'assets/');
+  this.load.multiatlas('world', 'assets/world.json', 'assets/');
+}
+```
+Den här koden laddar 2 atlas som får asset-namnen caveperson och world.
+Efter att preloaden har utförs är de redo att användas. Statiska bilder kan laddas in från den(som texturer) men för animerade
+objekt behöver animation skapas. Detta görs i spelets create metod. 
+
+### Animation 
+För att skapa en run-cycle för Caveperson. 
+
+```
+this.anims.create({
+  key: 'run',
+  frames: this.anims.generateFrameNames('caveperson', {
+    frames: ['0.png', '1.png', '2.png', '1.png']
+  }),
+  frameRate: 10,
+  repeat: -1
+});
+```
+* key är namnet på animationen
+* frames är de frames som ska skapas, de kan skapas automatiskt eller anges statiskt. Notera att i exemplet ovan så återanvänds frame 1.
+* Sedan följer framerate och repeat.
+
+### Sprite eller Image
+
+Ladda in en bild. Parametrarna är x, y, atlas, frame.
+
+```
+this.add.image(400, 300, 'world', '00.png');
+```
+
+Ladda in en bild som en sprite. Parametrarna är x, y, atlas, frame.
+
+```
+let bg = this.add.sprite(400, 300, 'world', '00.png');
+```
+
+För att skapa en bild i en grupp(för att använda fysik bland annat). Först skapas gruppen, sedan skapas objektet i gruppen.
+Parametrar är: x, y, atlas följt av .setFrame(frame);
+
+```
+platforms = this.physics.add.staticGroup();
+platforms.create(i, 568, 'world').setFrame('12.png');
+```
+
+## Manipulation
+
+Inladdade bilder och animationer från atlasen kan sedan manipuleras. De kan roteras skalas och flippas.
+Detta är väldigt användbart för att justera storleken men även för att vända på animationer(så vi kan återanvända dem).
+
+Koden för detta ser ut som följer, för att uppdatera modifierade objekt så är det viktigt att köra refreshBody() efter
+skalan ändrats. Detta gör så att det faktiska fysikobjektet uppdateras (kontrollera detta genom att sätta debug: true i config).
+
+```
+.setScale(x,y);
+.refreshBody();
+
+.flipX = true/false;
+```

@@ -52,8 +52,10 @@
         repeat: -1
       });
 
-      let bg = this.add.sprite(400, 300, 'world', '00.png');
-      bg.setScale(14, 10);
+      // let bg = this.add.sprite(400, 300, 'world', '00.png');
+      // bg.setScale(14, 10);
+
+      this.add.image(400, 300, 'world', '00.png').setScale(14,10);
 
       platforms = this.physics.add.staticGroup();
 
